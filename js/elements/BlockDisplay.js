@@ -39,7 +39,6 @@ class BlockDisplay extends Selectable {
             this._possibleVariants = {};
 
             const response = await fetch(new BlockstateResourcePath(name).toPath());
-
             const json = await response.json();
 
             if ('variants' in json) {

@@ -3,5 +3,5 @@ node_modules/
 package-lock.json
 package.json
 public/1.19/
-public/1.20/
+public/1.20/assets
 dist/

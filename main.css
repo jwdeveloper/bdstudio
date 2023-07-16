@@ -79,6 +79,8 @@ body {
     --number-color: var(--rose);
     --string-color: var(--spring-green);
     border-radius: 4pt;
+    
+
 }
 
 .lil-gui>.title {
@@ -88,7 +90,10 @@ body {
 
 .lil-gui .children:empty::before {
     display: none;
+    
 }
+
+
 
 #GUI {
     display: flex;
@@ -243,11 +248,15 @@ body {
 
 .searchGUI {
     --name-width: 40px;
+    min-width: 100px;
+    min-height: 580px;
 }
 
+
+
 .searchGUI .lil-gui {
-    max-height: 512px;
-    overflow-y: scroll;
+    max-height: 580px;
+ 
 }
 
 .searchGUI .controller.function .widget .name {
@@ -442,20 +451,25 @@ body {
     --width: min(100%, 700px);
     flex-grow: 0;
 
+  
+
 }
 
 .dialog .lil-gui>.title {
     pointer-events: none;
     display: flex;
     align-items: center;
+  
 }
 
 .dialog .lil-gui>.title::before {
     content: '';
+    
 }
 
 .dialog .lil-gui>.title>span {
     flex-grow: 3;
+    
 
 }
 
@@ -523,4 +537,82 @@ body {
     .titleCard .logo {
         display: none;
     }
+    
 }
+
+.lil-gui > .children {
+    --widget-height: 100%;
+    overflow-y: hidden;
+    
+}
+
+.lil-gui.root > .children{
+    overflow-y: hidden;
+    
+}
+
+.controller  .string
+{
+   width: 100%;
+
+}
+.children
+{
+    display: flex;
+    flex-wrap: wrap;
+    overflow-x: hidden;
+}
+
+.search-item
+{
+    flex: 1 0 10%; 
+  
+}
+
+.lil-gui
+{
+    overflow-y: auto;
+}
+
+
+.pixelated
+{
+    image-rendering: pixelated;
+}
+
+.search-item-image
+{
+
+    height: 100px;
+    overflow: hidden;
+    object-fit: contain;
+
+}
+
+
+
+.search-item-container
+{
+    transition: transform 0.3s;
+}
+
+.search-item-container:hover
+{
+    transform: scale(1.2);
+    z-index: 2;
+}
+
+.slide-in-from-right {
+    animation: 0.6s ease-out 0s 1 slideInFromRight forwards;
+  }
+  
+  @keyframes slideInFromRight {
+    0% {
+      transform: translateX(100%);
+      transform: scale(0);
+    }
+    100% {
+      transform: translateX(0);
+      transform: scale(1);
+    }
+  }

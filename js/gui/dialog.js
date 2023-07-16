@@ -1,13 +1,15 @@
 import { GUI } from './guiClass.js';
 
 export class ModalGUI extends GUI {
-    constructor(editor, args) {
+    constructor(editor, args)
+     {
         super(editor, args);
         
         this.dialogDom = document.createElement('div');
         this.dialogDom.classList.add('dialog');
         this.parentDom.appendChild(this.dialogDom);
         this.dialogDom.appendChild(this.domElement);
+        this.onOpen = () => {}
         this.$title.innerHTML = `
             <span>${this._title}</span>
         `;
@@ -25,6 +27,7 @@ export class ModalGUI extends GUI {
 
     showModal() {
         this.dialogDom.classList.remove('hidden');
+        this.onOpen();
         this.open();
     }
 

@@ -35,10 +35,12 @@ import {
 } from './commands/commands.js';
 
 import { BlockDisplay, ItemDisplay, Collection } from './elements/elements.js';
-import { assetsPath } from './elements/BlockDisplay.js';
+import { BlockImageGenerator } from './elements/blockImageGenerator.js'
 import { compressJSON, decompressJSON } from './utils.js';
+import { Resourcepack } from './resourcepack.js';
 
 let renderer, scene, currentCamera, viewHelper, viewHelperRenderer;
+
 
 class Editor {
     scene; renderer; control; orbit;
@@ -47,10 +49,13 @@ class Editor {
     objects; currentObject;
     clipboard = [];
     gui = {};
+    resourcepack;
 
     constructor(domElement) {
 
         this.domElement = domElement;
+        this.resourcepack = new Resourcepack();
+        this.resourcepack.downloadResourcepackAsync();
         new Scene(this);
 
         this.objects = new THREE.Group();
@@ -71,6 +76,17 @@ class Editor {
         this.history = new History(this);
 
         this.render();
+       
+      
+        BlockImageGenerator.generateImage(
+            {
+                editor: this,
+                name: "bamboo_block"
+            },  async (texture3D)=> 
+        {
+               console.log(texture3D)
+         });
+     
     }
 
     initGUI() {
@@ -80,56 +96,58 @@ class Editor {
         const right_tool_strip = document.getElementById('right_tool_strip');
         const side_container = document.getElementById('side_container');
 
-        
-        
 
-        let project = new GUI(this,{ autoPlace: false, title: 'Elements', container: side_container });
+
+
+        let project = new GUI(this, { autoPlace: false, title: 'Elements', container: side_container });
         //side_container.appendChild(project.domElement);
-        let elementTools = new ElementToolsGUI(this,{autoplace: false, title: '', parent: project});
-        let elements = new ElementsGUI(this,{autoplace: false, title: 'Elements', parent: project});
-        
-        
-        
-        
-        let properties = new PropertiesGUI(this,{ autoPlace: false, title: 'Properties', container: side_container });
-        let transforms = new TransformsGUI(this,{ autoPlace: false, title: 'Transforms', container: side_container });
-        
+        let elementTools = new ElementToolsGUI(this, { autoplace: false, title: '', parent: project });
+        let elements = new ElementsGUI(this, { autoplace: false, title: 'Elements', parent: project });
 
-        let versionTools = new VersionToolsGUI(this,{autoplace: false, title: '', container: top_tool_strip});
-        let fileTools = new FileToolsGUI(this,{autoplace: false, title: '', container: top_tool_strip});
-        let historyTools = new HistoryToolsGUI(this,{autoplace: false, title: '', container: top_tool_strip});
-        let exportTools = new ExportToolsGUI(this,{autoplace: false, title: '', container: top_tool_strip});
 
-        let blockSearch = new BlockSearchGUI(this,{autoplace: false, title: 'Block search', container: this.domElement});
-        let itemSearch = new ItemSearchGUI(this,{autoplace: false, title: 'Item search', container: this.domElement});
-        let help = new HelpGUI(this,{ autoPlace: false, title: 'Help', container: this.domElement });
 
-        let command = new CommandGUI(this,{autoplace: false, title: 'Command', container: this.domElement});
-        let version = new VersionGUI(this,{autoplace: false, title: 'Welcome to BDStudio!', container: this.domElement});
-        let donate = new DonateGUI(this,{autoplace: false, title: 'Enjoy using BDStudio?', container: this.domElement});
 
-        let transform = new TransformToolsGUI(this,{autoplace: false, title: '', container: left_tool_strip}, true);
-        let misc = new MiscGUI(this, {autoplace: false, title: '', container: top_tool_strip}, false);
+        let properties = new PropertiesGUI(this, { autoPlace: false, title: 'Properties', container: side_container });
+        let transforms = new TransformsGUI(this, { autoPlace: false, title: 'Transforms', container: side_container });
+
+
+        let versionTools = new VersionToolsGUI(this, { autoplace: false, title: '', container: top_tool_strip });
+        let fileTools = new FileToolsGUI(this, { autoplace: false, title: '', container: top_tool_strip });
+        let historyTools = new HistoryToolsGUI(this, { autoplace: false, title: '', container: top_tool_strip });
+        let exportTools = new ExportToolsGUI(this, { autoplace: false, title: '', container: top_tool_strip });
+
+      
+
+        let blockSearch = new BlockSearchGUI(this, { autoplace: false, title: 'Block search', container: this.domElement });
+        let itemSearch = new ItemSearchGUI(this, { autoplace: false, title: 'Item search', container: this.domElement });
+        let help = new HelpGUI(this, { autoPlace: false, title: 'Help', container: this.domElement });
+
+        let command = new CommandGUI(this, { autoplace: false, title: 'Command', container: this.domElement });
+        // let version = new VersionGUI(this,{autoplace: false, title: 'Welcome to BDStudio!', container: this.domElement});
+        // let donate = new DonateGUI(this,{autoplace: false, title: 'Enjoy using BDStudio?', container: this.domElement});
+
+        let transform = new TransformToolsGUI(this, { autoplace: false, title: '', container: left_tool_strip }, true);
+        let misc = new MiscGUI(this, { autoplace: false, title: '', container: top_tool_strip }, false);
         let loading = new LoadingGUI(this).show('BDStudio');
 
         this.gui = {
-            elementTools: elementTools, 
+            elementTools: elementTools,
             blockSearch: blockSearch,
             itemSearch: itemSearch,
             elements: elements,
             properties: properties,
             transforms: transforms,
             help: help,
-            versionTools: versionTools, 
-            fileTools: fileTools, 
-            historyTools: historyTools, 
-            exportTools: exportTools, 
-            misc: misc, 
-            command: command, 
-            version: version,
-            donate: donate,
-            transform: transform, 
-            loading: loading, 
+            versionTools: versionTools,
+            fileTools: fileTools,
+            historyTools: historyTools,
+            exportTools: exportTools,
+            //  misc: misc, 
+            command: command,
+            //   version: version,
+            // donate: donate,
+            transform: transform,
+            loading: loading,
         }
     }
 
