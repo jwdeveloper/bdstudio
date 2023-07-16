@@ -67,19 +67,6 @@ class Scene {
         const light = new THREE.DirectionalLight(0xffffff, 0.5);
         light.position.set(1, 1.5, 0.5);
         editor.scene.add(light);
-
-
-
-        
-        
-
-        
-
-        
-
-        
-
-        
     }
 }
 
